@@ -1,5 +1,7 @@
 target/
+export/
 *.glf
 *.jar
 Run eUniverse2.launch
 *.bak
+*.zip
