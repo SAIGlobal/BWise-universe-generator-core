@@ -172,15 +172,25 @@ public class BWiseDM {
 	
 	public  List<Map<String, String>>  getColumns(String Table, String attributes, String bwiseclass) {
 		
-		String sql = "select T.*,   E.NAME ROOTCLASSLINK " + 
-				"from V_DM_COLUMNS T  " +
-				"left join M_CLASSDEF D on D.NAME = t.LINKCLASSNAME " + 
-				"left join M_CLASSDEF E on D.SUPERCLASS = E.CLASSDEFID  "
-				+ "left join (SELECT ROWNUM MYORDER,layout_id CLASSNAME,trim(COLUMN_VALUE) p\r\n" + 
-				"      FROM (SELECT layout_id,form_fields str FROM R_FORM_LAYOUT  where layout_id= '"+bwiseclass+"') DATA, xmltable(('\"' || REPLACE(str, '|', '\",\"') || '\"'))) o on o.classname = t.classname and o.p = t.attribute "+
+		String sql = "";
+		
+		if (dbtype.equals("sqlserver"))
+			sql = "select T.*,   E.NAME ROOTCLASSLINK " + 
+					"from V_DM_COLUMNS T  " +
+					"left join M_CLASSDEF D on D.NAME = t.LINKCLASSNAME " + 
+					"left join M_CLASSDEF E on D.SUPERCLASS = E.CLASSDEFID  " +
+	    	  		"where  t.columntype = 'VALUE' and t.TABLENAME = '"+Table+"'"
+	    	  				+ " ORDER BY t.CLASSNAME ,t.SEQUENCENUMBER";
+		else if (dbtype.equals("oracle"))
+			sql = "select T.*,   E.NAME ROOTCLASSLINK " + 
+					"from V_DM_COLUMNS T  " +
+					"left join M_CLASSDEF D on D.NAME = t.LINKCLASSNAME " + 
+					"left join M_CLASSDEF E on D.SUPERCLASS = E.CLASSDEFID  "
+					+ "left join (SELECT ROWNUM MYORDER,layout_id CLASSNAME,trim(COLUMN_VALUE) p\r\n" + 
+					"      FROM (SELECT layout_id,form_fields str FROM R_FORM_LAYOUT  where layout_id= '"+bwiseclass+"') DATA, xmltable(('\"' || REPLACE(str, '|', '\",\"') || '\"'))) o on o.classname = t.classname and o.p = t.attribute "+
 
-    	  		"where  t.columntype = 'VALUE' and t.TABLENAME = '"+Table+"'"
-    	  				+ " ORDER BY t.CLASSNAME ,NVL(o.MYORDER, 0), t.SEQUENCENUMBER";
+	    	  		"where  t.columntype = 'VALUE' and t.TABLENAME = '"+Table+"'"
+	    	  				+ " ORDER BY t.CLASSNAME ,NVL(o.MYORDER, 0), t.SEQUENCENUMBER";
 		
 		if (attributes != null && attributes.length() > 0) {
 			attributes = String.join("','",attributes.trim().split(";"));
@@ -344,7 +354,7 @@ public class BWiseDM {
 		if (dbtype.equals("sqlserver"))
 		sql="select q.*\r\n" + 
 				"from "+dwh+".dbo."+TableName+" t\r\n" + 
-				"inner join "+dwh+".T_QUESTION q on q.islive=1 and q.questionid = t.relatedid\r\n" + 
+				"inner join "+dwh+".dbo.T_QUESTION q on q.islive=1 and q.questionid = t.relatedid\r\n" + 
 				"where t.islive=1\r\n" + 
 				"and q.ishidden=0\r\n" + 
 				"and q.typename not in( 'No Answer','Create Issue')\r\n" + 
