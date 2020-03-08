@@ -398,6 +398,7 @@ public void addViewToDF(String name) {
 			return;
 	}
 	dataFoundationFactory.createDataFoundationView(name, dataFoundation);
+	this.saveDFX();
 	
 }
 
@@ -620,14 +621,15 @@ public void addJoin(String expression, String tab1, String tab2, Cardinality car
 	for (Join t : dataFoundation.getJoins()) 
 	{
 		SQLJoin j = (SQLJoin) t;
-		if (j.getExpression().equals(expression))
+		if (j.getExpression().replace("\"", "").replace(" = ", "=").equals(expression.replace("\"", "").replace(" = ", "=")))
 			return;
 	}
 
 
-    parentLogger.log(Level.TRACE,"Create joins");
+   
     try {
  SQLJoin join = dataFoundationFactory.createSqlJoin(expression, dataFoundation);
+ parentLogger.log(Level.TRACE,"Create joins");
  join.setOuterType(OuterType.OUTER_RIGHT);
     join.setCardinality(card);
     }
