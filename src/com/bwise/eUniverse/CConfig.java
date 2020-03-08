@@ -127,12 +127,12 @@ public class CConfig {
 	        
 	        if(entry.getKey().toLowerCase().equals("general")) {
 	        	classes = entry.getValue().get("classes").toString();
-	        	multilang = entry.getValue().get("multilang").toString().toLowerCase().equals("true") ? true:false;
-	        	histo = entry.getValue().get("historic").toString().toLowerCase().equals("true") ? true:false;
-	        	permission = entry.getValue().get("permission").toString().toLowerCase().equals("true") ? true:false;
+	        	multilang = entry.getValue().get("multilang") != null && entry.getValue().get("multilang").toString().toLowerCase().equals("true") ? true:false;
+	        	histo = entry.getValue().get("historic") != null &&  entry.getValue().get("historic").toString().toLowerCase().equals("true") ? true:false;
+	        	permission = entry.getValue().get("permission") != null && entry.getValue().get("permission").toString().toLowerCase().equals("true") ? true:false;
 	        	controlassessment = entry.getValue().get("controlassessment") != null ? entry.getValue().get("controlassessment").toString() : "none";
-	        	risktree = entry.getValue().get("risktree").toString().toLowerCase().equals("true") ? true:false;
-	        	multistep = entry.getValue().get("multistep").toString().toLowerCase().equals("true") ? true:false;
+	        	risktree = entry.getValue().get("risktree") != null && entry.getValue().get("risktree").toString().toLowerCase().equals("true") ? true:false;
+	        	multistep = entry.getValue().get("multistep") != null && entry.getValue().get("multistep").toString().toLowerCase().equals("true") ? true:false;
 	        	parentLogger.log(Level.INFO,"Value multistep="+ entry.getValue().get("multistep").toString());
 	        	action = entry.getValue().get("classes").toString().toUpperCase();
 	        	
