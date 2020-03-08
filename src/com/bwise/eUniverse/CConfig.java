@@ -133,7 +133,7 @@ public class CConfig {
 	        	controlassessment = entry.getValue().get("controlassessment") != null ? entry.getValue().get("controlassessment").toString() : "none";
 	        	risktree = entry.getValue().get("risktree") != null && entry.getValue().get("risktree").toString().toLowerCase().equals("true") ? true:false;
 	        	multistep = entry.getValue().get("multistep") != null && entry.getValue().get("multistep").toString().toLowerCase().equals("true") ? true:false;
-	        	parentLogger.log(Level.INFO,"Value multistep="+ entry.getValue().get("multistep").toString());
+	        	//parentLogger.log(Level.INFO,"Value multistep="+ entry.getValue().get("multistep").toString());
 	        	action = entry.getValue().get("classes").toString().toUpperCase();
 	        	
 	        	stepsnumber = entry.getValue().get("stepsnumber") != null ? Integer.parseInt(entry.getValue().get("stepsnumber").toString()) : 3;
